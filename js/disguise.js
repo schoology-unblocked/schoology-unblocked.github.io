@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
    };
 
    const disableDisguise = () => {
-      document.title = "Jet Yeh's";
+      document.title = "Yohoho 77";
 
       let link = document.querySelector("link[rel~='icon']");
       if (link) {
