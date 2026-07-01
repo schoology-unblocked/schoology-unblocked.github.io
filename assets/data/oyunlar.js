@@ -63,12 +63,6 @@ window.oyunlar = {
     "game_url": "https://icons-5.org/g4m3s/angry-sharks/game.html",
     "categories": []
   },
-  "10": {
-    "label": "sandboxels",
-    "game_image_icon": "https://icons-5.org/g4m3s/sandboxels/icons/icon.jpg",
-    "game_url": "https://icons-5.org/g4m3s/sandboxels/game.html",
-    "categories": []
-  },
   "11": {
     "label": "Aquapark Slides",
     "game_image_icon": "https://icons-5.org/g4m3s/aquapark-slides/splash.png",
