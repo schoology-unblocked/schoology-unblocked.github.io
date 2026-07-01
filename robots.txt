@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://yohoho-77.github.io/sitemap.xml

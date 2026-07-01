@@ -1,0 +1,3 @@
+Contact: mailto:ckaracar@gmail.com
+Preferred-Languages: en, tr
+Canonical: https://yohoho-77.github.io/.well-known/security.txt

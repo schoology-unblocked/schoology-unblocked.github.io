@@ -1,4 +1,4 @@
-/* Auto-categorized oyunlar.js */
+/* Yohoho 77 game catalog */
 window.oyunlar = {
   "1": {
     "label": "1v1.LOL",
@@ -61,6 +61,12 @@ window.oyunlar = {
     "label": "Angry Sharks",
     "game_image_icon": "https://icons-5.org/g4m3s/angry-sharks/assets/favicon/icon-512x512.png",
     "game_url": "https://icons-5.org/g4m3s/angry-sharks/game.html",
+    "categories": []
+  },
+  "10": {
+    "label": "sandboxels",
+    "game_image_icon": "https://icons-5.org/g4m3s/sandboxels/icons/icon.jpg",
+    "game_url": "https://icons-5.org/g4m3s/sandboxels/game.html",
     "categories": []
   },
   "11": {
