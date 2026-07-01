@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Play</title>
+  <link rel="icon" type="image/png" href="assets/img/logo.png"/>
+  <link rel="stylesheet" href="assets/css/style.css?7ss"/>
+  <link rel="stylesheet" href="assets/css/overlay_nav_fix.css">
+
+  <style>
+    /* Iframe appearance */
+    #gameframe{
+      width:100%;
+      height:62vh;
+      max-width:1200px;
+      display:block;
+      margin:0 auto;
+      border:2px solid #1e2c58;
+      border-radius:10px;
+      box-shadow:0 0 8px rgba(0,0,0,.4);
+    }
+    /* Overlay: centered cover + play */
+    #overlay{
+      position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:12px; z-index:5;
+      pointer-events:auto;
+    }
+    .overlaybar{ position:absolute; top:10px; left:10px; right:10px;
+      display:flex; justify-content:space-between; align-items:center; }
+    .gname{ margin:0; font-size:18px; }
+    .gamecover{ width:160px; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 1px 6px rgba(0,0,0,.35); }
+    /* Bottom control box */
+    .control-box{ display:flex; gap:10px; justify-content:flex-end; align-items:center;
+      padding:10px 0; margin-top:8px; max-width:1200px; margin-left:auto; margin-right:auto; }
+    /* Fullscreen fallback */
+    .player{ position:relative; }
+    .player.is-fs{ position:fixed!important; inset:0!important; width:100vw!important; height:100vh!important;
+      background:#0a1020; z-index:9999; border-radius:0!important; }
+    .player.is-fs #gameframe{ width:100%!important; height:100%!important; }
+    html.is-fs, body.is-fs{ overflow:hidden!important; }
+  </style>
+<style>
+/* === Inline patch v2: cover/title centered, spacing, and bar gname hidden === */
+#overlay .gamecover{ display:block; margin:-12px auto 10px auto; }
+#overlay-gamename{ text-align:center; font-size:1.1rem; font-weight:700; color:#fff; margin-top:6px; }
+#playbtn{ display:inline-block; margin-top:8px; margin-bottom:20px !important; }
+#overlay .overlaybar #gname{ display:none !important; }
+</style>
+</head>
+<body>
+<div id="preroll"></div>
+<script>
+	function getScript(src) {
+    var headElm = document.head || document.getElementsByTagName('head')[0];
+    var script = document.createElement("script");
+    var once = true;
+    script.async = "async";
+    script.type = "text/javascript";
+    script.charset = "UTF-8";
+    script.src = src;
+    script.onload = script.onreadystatechange = function() {
+        if (once && (!script.readyState || /loaded|complete/.test(script.readyState))) {
+            once = false;         
+            script.onload = script.onreadystatechange = null;
+			console.log("okeey");
+        }
+    };
+	  headElm.appendChild(script);
+}
+
+ 
+	getScript("https://api.adinplay.com/libs/aiptag/pub/MNS/agario.cafe/tag.min.js");
+ 
+	window.aiptag = window.aiptag || {cmd: []};
+	aiptag.cmd.display = aiptag.cmd.display || [];
+	aiptag.cmd.player = aiptag.cmd.player || [];
+
+	//CMP tool settings
+	aiptag.cmp = {
+		show: true,
+		position: "centered",  //centered, bottom
+		button: true,
+		buttonText: "Privacy settings",
+		buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
+	}
+
+	aiptag.cmd.player.push(function() {
+		aiptag.adplayer = new aipPlayer({
+			AD_WIDTH: 960,
+			AD_HEIGHT: 540,
+			AD_DISPLAY: 'center', //default, fullscreen, center, fill
+			LOADING_TEXT: 'loading advertisement',
+			PREROLL_ELEM: function(){return document.getElementById('preroll')},
+			AIP_COMPLETE: function (evt){ try{ if(window.__pr_cb){ window.__pr_cb(); } }catch(e){} finally{ window.__pr_cb=null; } },
+			AIP_REMOVE: function ()  {
+				// Here it's safe to remove the PREROLL_ELEM from the page if you want. But it's not recommend.
+			}
+		});
+	});
+	
+	 
+ 
+				function show_preroll() {
+ 					if (typeof aiptag.adplayer !== 'undefined') {
+				 	aiptag.cmd.player.push(function() { aiptag.adplayer.startPreRoll(); });
+					} else {
+				    	
+   //skip_play();
+ 
+					}
+				}
+	
+</script>
+  <div class="container">
+    <header class="header">
+      <nav id="main-nav" class="main-nav">
+        <a href="/">Home</a>
+        <a href="#popular-grid">Popular</a>
+        <a href="contact.html">Contact</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
+  </div>
+
+  <!-- GAME AREA -->
+  <div class="player" id="player">
+    <iframe id="gameframe" allow="autoplay; fullscreen"
+            referrerpolicy="no-referrer-when-downgrade" allow="fullscreen; autoplay" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="overlay" id="overlay">
+      <div class="overlaybar"></div>
+      <img id="gamecover" class="gamecover" alt="Game cover"/>
+  <div id="overlay-gamename" class="overlay-gamename"><span id="gname"></span></div>
+      <button id="playbtn" onclick="show_preroll()" class="bigbtn">Play Now</button>
+      <div class="ad-slot" id="ad970">
+        <div id="agario-cafe_970x250" class="ad-placeholder">
+		<script type='text/javascript'>
+			aiptag.cmd.display.push(function() { aipDisplayTag.display('agario-cafe_970x250'); });
+		</script></div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="control-box" class="control-box">
+  <button id="fullscreen" class="button">Fullscreen</button>
+  </div>
+
+  <p class="small" style="margin-top:10px; text-align:center;">
+    Tip: Press <strong>F</strong> for fullscreen (browser support may vary).
+  </p>
+
+  <script src="assets/data/oyunlar.js?1.1.1"></script>
+  <script src="assets/data/lessons.js?1.1.1"></script>
+  <script src="assets/js/game.js?1.1.1"></script>
+  
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-30TP7NNZ8J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-30TP7NNZ8J');
+</script>
+  </body>
+</html>

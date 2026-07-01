@@ -1,0 +1,22 @@
+
+/* === Overlay Title Patch (non-destructive) === */
+
+/* Move cover image a bit upward & keep centered */
+#overlay .gamecover{
+  display:block;
+  margin: -10px auto 10px auto; /* was auto; pull up by ~10px */
+}
+
+/* Title shown just under the cover image */
+#overlay-gamename{
+  text-align:center;
+  font-size:1.1rem;
+  font-weight:600;
+  color:#fff;
+  margin-top:6px;
+}
+
+/* Add a blank line after Play Now button */
+#playbtn{
+  margin-bottom: 20px !important;
+}

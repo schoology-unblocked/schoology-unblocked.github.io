@@ -1,0 +1,15 @@
+
+/* === Overlay & Nav Fix (safe override) === */
+
+/* 1) Remove spacing between cover image and title */
+#overlay .gamecover{
+  margin-bottom: 0 !important;
+}
+#overlay-gamename{
+  margin-top: 0 !important;
+}
+
+/* 2) Center the main nav like index.html */
+.header .main-nav{
+  justify-content: center !important;
+}
