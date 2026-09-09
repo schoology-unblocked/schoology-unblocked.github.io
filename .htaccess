@@ -1,6 +1,6 @@
 RewriteEngine On
  
-RewriteRule ^ads.txt$ ads.php [L]
+
 
 
  

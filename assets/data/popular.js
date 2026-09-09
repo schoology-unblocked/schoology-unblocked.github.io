@@ -1,15 +1,1 @@
-/* Edit this file to control which games appear in the Popular section.
- * Use exact labels from assets/data/games.json
- */
-window.popularGames = [
-  "BitLife",
-  "Drive Mad",
-  "Cookie Clicker",
-  "1v1.LOL",
-  "Slope",
-  "Retro Bowl",
-  "Retro Bowl College",
-  "Drift Boss",
-  "Subway Surfers",
-  "Basketball Stars",
-];
+window.popularGames = ["1v1.LOL","Paper.io 2","Agar.io","Slither.io","Yohoho.io","Shell Shockers","Krunker.io","Zombs Royale","Smash Karts","Territorial.io","Slope","Basketball Stars"];

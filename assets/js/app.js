@@ -29,7 +29,7 @@
 
       const a = document.createElement('a');
       const gi = state.games.findIndex(x => x.label===g.label && x.game_url===g.game_url);
-      a.href = (window.gameSlugMap && window.gameSlugMap[String(g.id)]) ? window.gameSlugMap[String(g.id)] : ('test.html?id=' + g.id);
+      a.href = (window.gameSlugMap && window.gameSlugMap[String(g.id)]) ? window.gameSlugMap[String(g.id)] : ((g.label || 'game').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '.html');
       a.title = g.label || '';
 
       const img = document.createElement('img');
@@ -68,7 +68,7 @@
 
       const a = document.createElement('a');
       const gi = state.games.findIndex(x => x.label===g.label && x.game_url===g.game_url);
-      a.href = (window.gameSlugMap && window.gameSlugMap[String(g.id)]) ? window.gameSlugMap[String(g.id)] : ('test.html?id=' + g.id);
+      a.href = (window.gameSlugMap && window.gameSlugMap[String(g.id)]) ? window.gameSlugMap[String(g.id)] : ((g.label || 'game').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '.html');
       a.title = g.label || '';
 
       const img = document.createElement('img');
@@ -134,7 +134,7 @@
   // Fetch games
   const res = await fetch('assets/data/games.json');
   const games = await res.json();
-  state.games = Array.isArray(games) ? games.map((g,i)=>({...g, id: String(i+1)})) : [];
+  state.games = Array.isArray(games) ? games.map((g,i)=>({...g, id: String(g.id || (i+1))})) : [];
   state.view = state.games.slice();
 
   // Build category options

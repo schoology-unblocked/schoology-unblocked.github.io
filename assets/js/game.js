@@ -134,11 +134,11 @@
     if(overlay){ overlay.style.display = 'none'; }
   }
 
-  // ✅ Robust "Open in New Tab" -> about:blank shell with ensured URL
+  // Open in New Tab: show preroll first, then open the about:blank game shell.
   if(openNew){
     openNew.addEventListener('click', function(e){
       e.preventDefault();
-      // Compute finalUrl synchronously (fallback to oyunlar map by id)
+
       var finalUrl = resolved.url;
       if(!finalUrl){
         var map = window.oyunlar || {};
@@ -148,39 +148,49 @@
       if(!finalUrl && urlParam){ finalUrl = urlParam; }
       if(!finalUrl){ alert('Game link not ready'); return; }
 
-      // Open about:blank (keep opener so we can still interact if needed)
-      var win = window.open('about:blank', '_blank'); // no noopener/noreferrer to avoid null window
-      if(!win){ return; }
-
       var title = (resolved.label || 'Game');
-      // Write a shell that iframes the game; address bar remains about:blank
-      var html = ''
-        + '<!doctype html><html><head><meta charset="utf-8">'
-        + '<meta name="viewport" content="width=device-width,initial-scale=1">'
-        + '<title>'+ String(title).replace(/</g,'&lt;').replace(/>/g,'&gt;') +'</title>'
-        + '<style>html,body{height:100%;margin:0;background:#0b1125}'
-        + 'iframe{position:fixed;inset:0;border:0;width:100vw;height:100vh;display:block}'
-        + '.bar{position:fixed;top:10px;right:10px;z-index:10;display:flex;gap:8px}'
-        + '.btn{background:rgba(17,26,58,.8);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 10px;color:#fff;font-family:system-ui,Segoe UI,Roboto;cursor:pointer}</style>'
-        + '</head><body>'
-        + '<div class="bar"><button class="btn" id="fs">Fullscreen</button></div>'
-        + '<iframe id="childframe" allow="fullscreen; autoplay" referrerpolicy="no-referrer-when-downgrade"></iframe>'
-        + '<script>('
-        + 'function(){'
-        + '  var url = '+ JSON.stringify(finalUrl) + ';'
-        + '  var f = document.getElementById("childframe");'
-        + '  try{ f.src = url; }catch(e){}'
-        + '  function req(){try{if(f.requestFullscreen)f.requestFullscreen({navigationUI:"hide"});else if(f.webkitRequestFullscreen)f.webkitRequestFullscreen();else if(f.mozRequestFullScreen)f.mozRequestFullScreen();else if(f.msRequestFullscreen)f.msRequestFullscreen();}catch(e){}}'
-        + '  document.getElementById("fs").addEventListener("click",req);'
-        + '})();'
-        + ')()<\/script>'
-        + '</body></html>';
 
-      try{
-        win.document.open();
-        win.document.write(html);
-        win.document.close();
-      }catch(e){}
+      function openGameTab(){
+        var win = window.open('about:blank', '_blank');
+        if(!win){
+          alert('Please allow pop-ups for this site, then try Open in New Tab again.');
+          return;
+        }
+
+        var html = ''
+          + '<!doctype html><html><head><meta charset="utf-8">'
+          + '<meta name="viewport" content="width=device-width,initial-scale=1">'
+          + '<title>'+ String(title).replace(/</g,'&lt;').replace(/>/g,'&gt;') +'</title>'
+          + '<style>html,body{height:100%;margin:0;background:#0b1125}'
+          + 'iframe{position:fixed;inset:0;border:0;width:100vw;height:100vh;display:block}'
+          + '.bar{position:fixed;top:10px;right:10px;z-index:10;display:flex;gap:8px}'
+          + '.btn{background:rgba(17,26,58,.8);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 10px;color:#fff;font-family:system-ui,Segoe UI,Roboto;cursor:pointer}</style>'
+          + '</head><body>'
+          + '<div class="bar"><button class="btn" id="fs">Fullscreen</button></div>'
+          + '<iframe id="childframe" allow="fullscreen; autoplay" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+          + '<script>('
+          + 'function(){'
+          + '  var url = '+ JSON.stringify(finalUrl) + ';'
+          + '  var f = document.getElementById("childframe");'
+          + '  try{ f.src = url; }catch(e){}'
+          + '  function req(){try{if(f.requestFullscreen)f.requestFullscreen({navigationUI:"hide"});else if(f.webkitRequestFullscreen)f.webkitRequestFullscreen();else if(f.mozRequestFullScreen)f.mozRequestFullScreen();else if(f.msRequestFullscreen)f.msRequestFullscreen();}catch(e){}}'
+          + '  document.getElementById("fs").addEventListener("click",req);'
+          + '})();'
+          + ')()<\/script>'
+          + '</body></html>';
+
+        try{
+          win.document.open();
+          win.document.write(html);
+          win.document.close();
+        }catch(e){}
+      }
+
+      if(typeof window.show_preroll === 'function'){
+        window.show_preroll(openGameTab);
+      }else{
+        openGameTab();
+      }
     });
   }
 
